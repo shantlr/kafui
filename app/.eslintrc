@@ -1,0 +1,71 @@
+{
+  "extends": ["react-app", "react-app/jest", "prettier"],
+  "rules": {
+    "import/order": [
+      "warn",
+      {
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "builtin"
+          },
+          {
+            "pattern": "react-dom",
+            "group": "builtin"
+          },
+          {
+            "pattern": "styles",
+            "group": "parent"
+          },
+          {
+            "pattern": "styles/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "apollo",
+            "group": "parent"
+          },
+          {
+            "pattern": "apollo/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "config",
+            "group": "parent"
+          },
+          {
+            "pattern": "config/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "views/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "components/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "context/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "lib/**",
+            "group": "parent"
+          },
+          {
+            "pattern": "hooks/**",
+            "group": "parent"
+          }
+        ],
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
+}

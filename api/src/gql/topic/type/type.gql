@@ -1,0 +1,11 @@
+type KafkaTopic {
+  name: String!
+  partitions: [KafkaTopicPartition!]!
+}
+
+type KafkaTopicPartition {
+  id: ID!
+  offset: Float
+  offsetHigh: Float
+  offsetLow: Float
+}

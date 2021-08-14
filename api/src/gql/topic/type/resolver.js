@@ -8,8 +8,27 @@ export const resolvers = {
         id: p.partitionId,
       }));
     },
+    consumerGroups: (topic) => {
+      const groupIds = kafka.topicConsumerGroup(topic.name) || [];
+      return groupIds.map((id) => ({
+        topic,
+        group: kafka.consumerGroups[id],
+      }));
+    },
+  },
+  KafkaTopicConsumerGroup: {
+    offsets: ({ topic, group }) => {
+      const offsets = kafka.consumerGroupOffsets(group.groupId, topic.name);
+      console.log(offsets);
+
+      return offsets || [];
+    },
+  },
+  KafkaConsumerGroupOffset: {
+    partitionId: (offset) => offset.partition,
   },
   KafkaTopicPartition: {
+    id: (partition) => `${partition.topic.name}:${partition.id}`,
     offset: (partition) => {
       const offset = kafka.partitionOffset(partition.topic.name, partition.id);
       if (!offset) {

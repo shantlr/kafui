@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_TOPICS = gql`
-  query {
+  query getTopics {
     topics {
       name
     }
@@ -9,7 +9,7 @@ export const GET_TOPICS = gql`
 `;
 
 export const GET_TOPIC_DETAILS = gql`
-  query ($name: String!) {
+  query getTopicDetails($name: String!) {
     topic(name: $name) {
       name
       partitions {

@@ -17,9 +17,28 @@ const main = async () => {
 
   await consumer.run({
     eachMessage: async ({ topic, message }) => {
-      consumer.log(topic, message.value.toString());
+      console.log(topic, message.value.toString());
     },
   });
+
+  const producer = k.producer({});
+  await producer.connect();
+
+  setInterval(() => {
+    producer
+      .send({
+        topic: 'TEST_TOPIC_1',
+        messages: [
+          {
+            key: '1',
+            value: 'TEST',
+          },
+        ],
+      })
+      .then(() => {
+        console.log('MSG SENT');
+      });
+  }, 30 * 1000);
 };
 
 main();

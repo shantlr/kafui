@@ -1,0 +1,12 @@
+type KafkaCluster {
+  id: ID!
+  brokers: [KafkaBroker!]!
+  controller: Int!
+}
+
+type KafkaBroker {
+  id: ID!
+  host: String!
+  port: Int!
+  isController: Boolean!
+}

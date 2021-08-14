@@ -1,6 +1,8 @@
 type KafkaTopic {
   name: String!
   partitions: [KafkaTopicPartition!]!
+
+  consumerGroups: [KafkaTopicConsumerGroup!]!
 }
 
 type KafkaTopicPartition {
@@ -8,4 +10,13 @@ type KafkaTopicPartition {
   offset: Float
   offsetHigh: Float
   offsetLow: Float
+}
+
+type KafkaTopicConsumerGroup {
+  group: KafkaConsumerGroup!
+  offsets: [KafkaConsumerGroupOffset!]!
+}
+type KafkaConsumerGroupOffset {
+  partitionId: ID!
+  offset: Int!
 }

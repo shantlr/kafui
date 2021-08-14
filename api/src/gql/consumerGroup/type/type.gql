@@ -1,0 +1,23 @@
+type KafkaConsumerGroup {
+  id: ID!
+  protocolType: KafkaConsumerGroupProtocolType!
+  protocol: KafkaConsumerGroupProtocol!
+  state: KafkaConsumerGroupState!
+  members: [KafkaConsumerGroupMember!]!
+}
+type KafkaConsumerGroupMember {
+  id: ID!
+  clientId: ID!
+  clientHost: String!
+  topics: [String]
+}
+
+enum KafkaConsumerGroupProtocolType {
+  consumer
+}
+enum KafkaConsumerGroupProtocol {
+  RoundRobinAssigner
+}
+enum KafkaConsumerGroupState {
+  Stable
+}

@@ -5,6 +5,7 @@ export class Interval {
    *
    * @param {Object} options
    * @param {(input: { count: number }) => Promise<void> | void} options.handler
+   * @param {number} [options.delay]
    */
   constructor({ name, handler, delay = 60 * 1000 }) {
     this.name = name;
@@ -15,6 +16,8 @@ export class Interval {
 
     this.intervalHandle = null;
     this.executing = false;
+
+    this.ongoing = false;
   }
 
   updateNextDelay() {}
@@ -23,6 +26,11 @@ export class Interval {
    * Start interval
    */
   async start() {
+    if (this.ongoing) {
+      return;
+    }
+
+    this.ongoing = true;
     logger.info(`[interval] ${this.name} started with delay ${this.delay}ms`);
     await this.exec();
     this.setupNextTimeout();
@@ -31,6 +39,10 @@ export class Interval {
    * Setup next call
    */
   setupNextTimeout() {
+    if (!this.ongoing) {
+      return;
+    }
+
     if (this.intervalHandle) {
       clearTimeout(this.intervalHandle);
     }

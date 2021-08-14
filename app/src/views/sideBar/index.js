@@ -1,8 +1,7 @@
-import { useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useRouteMatch } from 'react-router';
 import styled from 'styled-components';
 
-import { GET_TOPICS } from 'apollo/queries/topic';
 import { ButtonLink } from 'components/link';
 import { List } from 'components/list';
 import { Text } from 'components/text';
@@ -12,6 +11,7 @@ const Item = styled.div`
   cursor: pointer;
   padding: var(--space-md);
   ${(props) => (props.active ? styles.base.bgHighlight : null)}
+  min-width: 175px;
 
   :hover {
     ${styles.base.bgHighlight}
@@ -20,25 +20,48 @@ const Item = styled.div`
   ${styles.transition}
 `;
 
-export const TopicsList = () => {
-  const { data } = useQuery(GET_TOPICS);
+const GET_DATA = gql`
+  query getData {
+    topics {
+      name
+    }
+    consumerGroups {
+      id
+      state
+    }
+  }
+`;
 
+const ConsumerGroupList = ({ consumerGroups }) => {
+  return (
+    <div>
+      {consumerGroups.map((group) => (
+        <ButtonLink key={group.id} to={`/group/${group.id}`}>
+          <Item>
+            <Text>{group.id}</Text>
+          </Item>
+        </ButtonLink>
+      ))}
+    </div>
+  );
+};
+
+export const TopicsList = ({ topics }) => {
   const urlMatch = useRouteMatch('/topic/:topicName');
 
   return (
     <List>
-      {Boolean(data && data.topics) &&
-        data.topics.map((topic) => (
-          <ButtonLink key={topic.name} to={`/topic/${topic.name}`}>
-            <Item
-              active={Boolean(
-                urlMatch && urlMatch.params.topicName === topic.name
-              )}
-            >
-              <Text>{topic.name}</Text>
-            </Item>
-          </ButtonLink>
-        ))}
+      {topics.map((topic) => (
+        <ButtonLink key={topic.name} to={`/topic/${topic.name}`}>
+          <Item
+            active={Boolean(
+              urlMatch && urlMatch.params.topicName === topic.name
+            )}
+          >
+            <Text>{topic.name}</Text>
+          </Item>
+        </ButtonLink>
+      ))}
     </List>
   );
 };
@@ -57,10 +80,26 @@ const Container = styled.div`
 `;
 
 export const MainSideBar = () => {
+  const { data } = useQuery(GET_DATA);
+
   return (
     <Container>
-      <Separator />
-      <TopicsList />
+      <ButtonLink to="">
+        <Item>Cluster</Item>
+      </ButtonLink>
+      {Boolean(data && data.consumerGroups) && (
+        <>
+          <Separator />
+          <ConsumerGroupList consumerGroups={data.consumerGroups} />
+        </>
+      )}
+
+      {Boolean(data && data.topics) && (
+        <>
+          <Separator />
+          <TopicsList topics={data.topics} />
+        </>
+      )}
     </Container>
   );
 };

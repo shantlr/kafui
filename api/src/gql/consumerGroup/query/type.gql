@@ -1,0 +1,4 @@
+extend type Query {
+  consumerGroups: [KafkaConsumerGroup!]!
+  consumerGroup(id: ID!): KafkaConsumerGroup
+}
